@@ -14,7 +14,7 @@ struct ListingService: ListingServiceProtocol {
     private let client: APIClient
     
     init() {
-        client = APIClient(baseURL: URLConstants.listingsURL)
+        client = APIClient(baseURL: URLConstants.baseURL)
     }
     
     func fetchListings() async throws -> ListingFeed {

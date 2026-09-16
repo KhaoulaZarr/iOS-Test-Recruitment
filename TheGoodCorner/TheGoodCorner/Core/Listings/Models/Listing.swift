@@ -48,14 +48,14 @@ struct Listing: Codable, Identifiable, Hashable {
         guard let small = imagesURL?.small else {
             return nil
         }
-        return "\(URLConstants.listingsURL)\(small)"
+        return "\(URLConstants.baseURL)\(small)"
     }
     
     var thumbImageURL: String? {
         guard let thumb = imagesURL?.thumb else {
             return nil
         }
-        return "\(URLConstants.listingsURL)\(thumb)"
+        return "\(URLConstants.baseURL)\(thumb)"
     }
 }
 

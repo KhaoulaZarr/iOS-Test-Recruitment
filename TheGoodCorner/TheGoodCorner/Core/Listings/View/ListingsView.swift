@@ -10,9 +10,15 @@ import SwiftUI
 struct ListingsView: View {
     @StateObject private var viewModel: ListingViewModel
     
-    init(service: ListingServiceProtocol = ListingService()) {
+    init(
+        listingsService: ListingServiceProtocol = ListingService(),
+        categoriesService: CategoryServiceProtocol = CategoryService()
+    ) {
         _viewModel = StateObject(
-            wrappedValue: ListingViewModel(service: service)
+            wrappedValue: ListingViewModel(
+                listingService: listingsService,
+                categoryService: categoriesService
+            )
         )
     }
     
@@ -31,7 +37,7 @@ struct ListingsView: View {
                         LazyVStack(spacing: 16) {
                             ForEach(listings) { listing in
                         
-                                ListingCardView(listing: listing)
+                                ListingCardView(listing: listing, categoryName: viewModel.categoryName(for: listing.categoryId))
                             }
                         }
                         .padding()

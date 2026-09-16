@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ListingCardView: View {
     let listing: Listing
+    let categoryName: String
     
     var body: some View {
         HStack(alignment: .center, spacing: 18) {
@@ -49,7 +50,7 @@ struct ListingCardView: View {
                         .foregroundStyle(.blue)
                 }
                 HStack(alignment: .top) {
-                    Text("Category".uppercased())
+                    Text(categoryName.uppercased())
                         .font(.caption.weight(.semibold))
                         .foregroundStyle(.secondary)
                     Spacer()
@@ -94,5 +95,5 @@ struct ListingCardView: View {
 }
 
 #Preview {
-    ListingCardView(listing: Listing.mockListings.first!)
+    ListingCardView(listing: Listing.mockListings.first!, categoryName: "Service")
 }
