@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ListingsView: View {
     @StateObject private var viewModel: ListingViewModel
+    @State private var showFilter: Bool = false
     
     init(
         listingsService: ListingServiceProtocol = ListingService(),
@@ -40,7 +41,7 @@ struct ListingsView: View {
                                     ListingCardView(listing: listing, categoryName: viewModel.categoryName(for: listing.categoryId))
                                 }
                                 .buttonStyle(.plain)
-                              
+                                
                             }
                         }
                         .padding()
@@ -57,6 +58,18 @@ struct ListingsView: View {
                             for: listing.categoryId
                         )
                     )
+                })
+            .toolbar {
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    Button {
+                        showFilter.toggle()
+                    } label: {
+                        Image(systemName: "line.3.horizontal.decrease.circle")
+                    }
+                }
+            }
+            .sheet(isPresented: $showFilter, content: {
+                CategoriesFilterView(viewModel: viewModel)
             })
             .refreshable {
                 await viewModel.loadListings()
@@ -66,7 +79,7 @@ struct ListingsView: View {
             }
         }
     }
-
+    
 }
 
 #Preview {
@@ -85,7 +98,7 @@ private extension ListingsView {
     
     func errorListingView(message: String) -> some View {
         Text(message)
-         .font(.body)
-          .foregroundStyle(.secondary).multilineTextAlignment(.center) .padding()
+            .font(.body)
+            .foregroundStyle(.secondary).multilineTextAlignment(.center) .padding()
     }
 }

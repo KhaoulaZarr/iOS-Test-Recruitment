@@ -10,10 +10,12 @@ import Combine
 
 final class ListingViewModel: ObservableObject  {
     @Published private(set) var loadingState: LoadingState<[Listing]> = .idle
+    @Published private(set) var categories: [Category] = []
     
     private let listingService: ListingServiceProtocol
     private let categoryService: CategoryServiceProtocol
     private var categoriesByID: [Int: String] = [:]
+    private var allListings: [Listing] = []
     
     init(listingService: ListingServiceProtocol, categoryService: CategoryServiceProtocol) {
         self.listingService = listingService
@@ -22,21 +24,52 @@ final class ListingViewModel: ObservableObject  {
     
     func loadListings() async {
         loadingState = .loading
+        
         do {
-            async let listingsTask  = try await listingService.fetchListings()
-            async let categoriesTask = try await categoryService.fetchCategories()
-            let (feed, categories) = try await (listingsTask, categoriesTask)
-            categoriesByID = Dictionary(uniqueKeysWithValues: categories.map {($0.id, $0.name)})
+            async let listingsTask = listingService.fetchListings()
+            async let categoriesTask = categoryService.fetchCategories()
             
-            let listings = feed.items
+            let (feed, fetchedCategories) = try await (
+                listingsTask,
+                categoriesTask
+            )
             
-            loadingState = listings.isEmpty ? .empty : .loaded(listings)
-        }catch {
+            categories = fetchedCategories
+            
+            categoriesByID = Dictionary(
+                uniqueKeysWithValues: fetchedCategories.map {
+                    ($0.id, $0.name)
+                }
+            )
+            
+            allListings = feed.items
+            loadingState = allListings.isEmpty
+            ? .empty
+            : .loaded(allListings)
+            
+        } catch {
             loadingState = .error(error.localizedDescription)
         }
     }
     
     func categoryName(for categoryID:Int) -> String {
         categoriesByID[categoryID] ?? "Unknown category"
+    }
+    
+    func filterByCategory(_ categoryID: Int?) {
+        guard let categoryID else {
+            loadingState = allListings.isEmpty
+            ? .empty
+            : .loaded(allListings)
+            return
+        }
+        
+        let filteredListings = allListings.filter {
+            $0.categoryId == categoryID
+        }
+        
+        loadingState = filteredListings.isEmpty
+        ? .empty
+        : .loaded(filteredListings)
     }
 }
