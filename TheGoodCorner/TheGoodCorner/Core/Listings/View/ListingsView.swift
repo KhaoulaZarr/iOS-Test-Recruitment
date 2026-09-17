@@ -36,8 +36,11 @@ struct ListingsView: View {
                     ScrollView {
                         LazyVStack(spacing: 16) {
                             ForEach(listings) { listing in
-                        
-                                ListingCardView(listing: listing, categoryName: viewModel.categoryName(for: listing.categoryId))
+                                NavigationLink(value: listing) {
+                                    ListingCardView(listing: listing, categoryName: viewModel.categoryName(for: listing.categoryId))
+                                }
+                                .buttonStyle(.plain)
+                              
                             }
                         }
                         .padding()
@@ -45,6 +48,16 @@ struct ListingsView: View {
                 }
             }
             .navigationTitle("Listings")
+            .navigationDestination(
+                for: Listing.self,
+                destination: { listing in
+                    ListingDetailView(
+                        listing: listing,
+                        categoryName: viewModel.categoryName(
+                            for: listing.categoryId
+                        )
+                    )
+            })
             .refreshable {
                 await viewModel.loadListings()
             }

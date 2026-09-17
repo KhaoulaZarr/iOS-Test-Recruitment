@@ -14,29 +14,9 @@ struct ListingCardView: View {
     var body: some View {
         HStack(alignment: .center, spacing: 18) {
             HStack(alignment: .center) {
-                AsyncImage(
-                 url: URL(string: listing.thumbImageURL ?? "")
-                ) { phase in
-                    switch phase {
-                    case .empty:
-                        imagePlaceholder
-
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .scaledToFill()
-
-                    case .failure:
-                        imagePlaceholder
-
-                    @unknown default:
-                        imagePlaceholder
-                    }
-                }
-                .frame(width: 92, height: 92)
-                .clipShape(RoundedRectangle(cornerRadius: 14))
-                
-
+                ListingImageView(imageURL: listing.thumbImageURL ?? "")
+                    .frame(width: 92, height: 92)
+                    .clipShape(RoundedRectangle(cornerRadius: 14))
             }
             VStack(alignment: .leading, spacing: 8) {
                 HStack(alignment: .top) {
@@ -44,7 +24,7 @@ struct ListingCardView: View {
                         .font(.headline)
                         .lineLimit(2)
                         .multilineTextAlignment(.leading)
-                   Spacer()
+                    Spacer()
                     Text("$ \(listing.price)")
                         .font(.headline.weight(.semibold))
                         .foregroundStyle(.blue)
@@ -56,16 +36,16 @@ struct ListingCardView: View {
                     Spacer()
                     
                     if listing.isUrgent {
-                                Text("URGENT")
-                                    .font(.caption2.weight(.bold))
-                                    .foregroundStyle(.red)
-                                    .padding(.horizontal, 6)
-                                    .padding(.vertical, 3)
-                                    .background(
-                                        Capsule()
-                                            .fill(.red.opacity(0.1))
-                                    )
-                            }
+                        Text("URGENT")
+                            .font(.caption2.weight(.bold))
+                            .foregroundStyle(.red)
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 3)
+                            .background(
+                                Capsule()
+                                    .fill(.red.opacity(0.1))
+                            )
+                    }
                 }
                 Text(listing.description)
                     .font(.subheadline)
@@ -81,15 +61,6 @@ struct ListingCardView: View {
         .overlay {
             RoundedRectangle(cornerRadius: 18, style: .continuous)
                 .stroke(Color.black.opacity(0.04), lineWidth: 1.0)
-        }
-    }
-       
-    private var imagePlaceholder: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 14)
-                .fill(.gray.opacity(0.12))
-
-            ProgressView()
         }
     }
 }
