@@ -6,6 +6,7 @@
 //
 import Foundation
 
+nonisolated
 enum CategoryEndPoint{
     case list
     

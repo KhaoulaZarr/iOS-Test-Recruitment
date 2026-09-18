@@ -74,6 +74,32 @@ enum NetworkError: Error, LocalizedError {
     var errorDescription: String? { userMessage }
 }
 
+nonisolated
+extension NetworkError: Equatable {
+    static func == (lhs: NetworkError, rhs: NetworkError) -> Bool {
+        switch (lhs, rhs) {
+
+        case (.transport(let lhsError), .transport(let rhsError)):
+            return lhsError.code == rhsError.code
+
+        case (.invalidResponse, .invalidResponse):
+            return true
+
+        case (.httpStatus(let lhsCode), .httpStatus(let rhsCode)):
+            return lhsCode == rhsCode
+
+        case (.decodingFailed(let lhsError), .decodingFailed(let rhsError)):
+            return lhsError.localizedDescription == rhsError.localizedDescription
+
+        case (.unknown(let lhsError), .unknown(let rhsError)):
+            return lhsError.localizedDescription == rhsError.localizedDescription
+
+        default:
+            return false
+        }
+    }
+}
+
 enum NetworkErrorMapper {
     
     static func map(_ error: Error) -> NetworkError {

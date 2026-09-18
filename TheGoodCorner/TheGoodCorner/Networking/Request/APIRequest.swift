@@ -14,9 +14,11 @@ enum HTTPMethod: String {
    case delete = "DELETE"
 }
 
+nonisolated
 struct EmptyResponse: Decodable {}
 
-struct APIRequest<Response :Decodable> {
+nonisolated
+struct APIRequest<Response : Decodable> {
     let method: HTTPMethod
     let path: APIRoute
     var queryItems:[URLQueryItem]

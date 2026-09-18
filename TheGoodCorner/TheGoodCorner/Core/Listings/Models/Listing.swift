@@ -7,6 +7,7 @@
 
 import Foundation
 
+nonisolated // By default default actor isolation is MainActor nonisolated means The function does not inherit main-actor isolation from the default setting.
 struct ListingFeed: Codable, Equatable {
     let total: Int
     let page: Int
@@ -23,6 +24,7 @@ struct ListingFeed: Codable, Equatable {
     }
 }
 
+nonisolated
 struct Listing: Codable, Identifiable, Hashable {
     let id: Int
     let isUrgent: Bool

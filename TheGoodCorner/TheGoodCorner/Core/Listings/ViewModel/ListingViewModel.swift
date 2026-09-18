@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 
+// No need to explicitly add @MainActor because Default Actor Isolation is set to MainActor in Build Settings.
 final class ListingViewModel: ObservableObject  {
     @Published private(set) var loadingState: LoadingState<[Listing]> = .idle
     @Published private(set) var categories: [Category] = []

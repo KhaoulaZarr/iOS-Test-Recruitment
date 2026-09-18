@@ -8,7 +8,13 @@
 import XCTest
 @testable import TheGoodCorner
 
-@MainActor
+/* APIClient
+   ↓
+  URLSession
+    ↓
+  MockUrlSessionProtocol
+ ↓
+ Fake response*/
 final class JsonMapperTests: XCTestCase {
     
     func test_with_valid_json_successfully_decodes()  {

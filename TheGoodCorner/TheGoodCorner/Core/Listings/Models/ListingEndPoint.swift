@@ -7,6 +7,7 @@
 
 import Foundation
 
+nonisolated
 enum ListingEndpoint{
     case list
     
