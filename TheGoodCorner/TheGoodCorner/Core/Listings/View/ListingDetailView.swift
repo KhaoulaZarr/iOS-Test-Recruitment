@@ -30,7 +30,7 @@ struct ListingDetailView: View {
 
 
 #Preview {
-    ListingDetailView(listing: Listing.mockListings.first!, categoryName: "Service")
+    ListingDetailView(listing: ListingDetailView.previewListing, categoryName: ListingDetailView.previewCategory.name)
 }
 
 private extension ListingDetailView {
@@ -47,5 +47,24 @@ private extension ListingDetailView {
         Text(listing.description)
             .font(.body)
             .foregroundStyle(.primary)
+    }
+}
+
+extension ListingDetailView {
+    
+    static var previewListing: Listing {
+        let listingFeed = try! StaticJsonMapper.decode(
+            file: "ListingsStaticData",
+            type: ListingFeed.self
+        )
+        return listingFeed.items.first!
+    }
+    
+    static var previewCategory: Category {
+        let categories = try! StaticJsonMapper.decode(
+            file: "CategoriesStaticData",
+            type: [Category].self
+        )
+        return categories.first!
     }
 }

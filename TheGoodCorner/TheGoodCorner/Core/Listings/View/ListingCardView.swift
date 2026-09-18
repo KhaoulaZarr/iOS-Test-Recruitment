@@ -66,5 +66,27 @@ struct ListingCardView: View {
 }
 
 #Preview {
-    ListingCardView(listing: Listing.mockListings.first!, categoryName: "Service")
+    ListingCardView(
+        listing: ListingCardView.previewListing,
+        categoryName: ListingCardView.previewCategory.name
+    )
+}
+
+extension ListingCardView {
+    
+    static var previewListing: Listing {
+        let listingFeed = try! StaticJsonMapper.decode(
+            file: "ListingsStaticData",
+            type: ListingFeed.self
+        )
+        return listingFeed.items.first!
+    }
+    
+    static var previewCategory: Category {
+        let categories = try! StaticJsonMapper.decode(
+            file: "CategoriesStaticData",
+            type: [Category].self
+        )
+        return categories.first!
+    }
 }
