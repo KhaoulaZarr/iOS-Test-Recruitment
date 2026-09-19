@@ -38,7 +38,7 @@ private extension ListingDetailView {
     var listingInformation: some View {
         Text(listing.title)
             .font(.title.bold())
-        Text("$ \(listing.price)")
+        Text("\(listing.price) €")
             .font(.title3.weight(.semibold))
             .foregroundStyle(.blue)
         Label(categoryName, systemImage: "tag")

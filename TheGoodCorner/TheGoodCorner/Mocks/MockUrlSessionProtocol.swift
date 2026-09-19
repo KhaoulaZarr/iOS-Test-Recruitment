@@ -5,8 +5,8 @@
 //  Created by Khawla Zarrami on 18/09/2026.
 //
 
+#if DEBUG
 import Foundation
-import XCTest
 
 // URLSession normally goes to the server, but here you replace the networking layer with MockUrlSessionProtocol, which returns fake responses.
 class MockUrlSessionProtocol: URLProtocol {
@@ -22,8 +22,7 @@ class MockUrlSessionProtocol: URLProtocol {
     
     override func startLoading() {
         guard let handler = MockUrlSessionProtocol.loadingHandler else {
-            XCTFail("Loading handler is not set.")
-            return
+            fatalError("Loading handler is not set.")
         }
         let (response, data) = handler()
         client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
@@ -37,3 +36,4 @@ class MockUrlSessionProtocol: URLProtocol {
         
     }
 }
+#endif

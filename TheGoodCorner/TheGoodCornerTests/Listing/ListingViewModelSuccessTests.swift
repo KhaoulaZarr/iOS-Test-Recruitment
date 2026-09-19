@@ -209,5 +209,5 @@ final class ListingViewModelSuccessTests: XCTestCase {
         } else {
             XCTFail("The State should be loaded")
         }
-    }    
+    }
 }

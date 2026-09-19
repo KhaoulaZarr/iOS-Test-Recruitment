@@ -4,8 +4,9 @@
 //
 //  Created by Khawla Zarrami on 19/09/2026.
 //
+
+#if DEBUG
 import Foundation
-@testable import TheGoodCorner
 
 struct ListingServiceFailureMock: ListingServiceProtocol {
     
@@ -13,3 +14,4 @@ struct ListingServiceFailureMock: ListingServiceProtocol {
         throw NetworkError.invalidResponse
     }
 }
+#endif

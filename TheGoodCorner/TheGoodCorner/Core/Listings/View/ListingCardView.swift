@@ -25,7 +25,7 @@ struct ListingCardView: View {
                         .lineLimit(2)
                         .multilineTextAlignment(.leading)
                     Spacer()
-                    Text("$ \(listing.price)")
+                    Text("\(listing.price) €")
                         .font(.headline.weight(.semibold))
                         .foregroundStyle(.blue)
                 }

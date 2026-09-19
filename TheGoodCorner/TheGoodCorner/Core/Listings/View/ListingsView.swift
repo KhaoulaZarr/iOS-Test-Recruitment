@@ -12,16 +12,34 @@ struct ListingsView: View {
     @State private var showFilter: Bool = false
     
     init(
-        listingsService: ListingServiceProtocol = ListingService(),
-        categoriesService: CategoryServiceProtocol = CategoryService()
-    ) {
-        _viewModel = StateObject(
-            wrappedValue: ListingViewModel(
-                listingService: listingsService,
-                categoryService: categoriesService
-            )
-        )
-    }
+     ) {
+         #if DEBUG
+         if UITestingHelper.isUITesting {
+             let mock: ListingServiceProtocol = UITestingHelper.isNetworkingSuccessful ? ListingServiceSuccessMock() : ListingServiceFailureMock()
+             _viewModel = StateObject(
+                wrappedValue: ListingViewModel(
+                    listingService: mock,
+                    categoryService: CategoryServiceSuccessMock()
+                )
+             )
+         } else {
+             _viewModel = StateObject(
+                 wrappedValue: ListingViewModel(
+                     listingService: ListingService(),
+                     categoryService: CategoryService()
+                    )
+                 )
+         }
+         
+         #else
+         viewModel = StateObject(
+             wrappedValue: ListingViewModel(
+                 listingService: ListingService(),
+                 categoryService: CategoryService()
+                )
+             )
+         #endif
+     }
     
     var body: some View {
         NavigationStack {
@@ -39,12 +57,14 @@ struct ListingsView: View {
                             ForEach(listings) { listing in
                                 NavigationLink(value: listing) {
                                     ListingCardView(listing: listing, categoryName: viewModel.categoryName(for: listing.categoryId))
+                                        .accessibilityIdentifier("item_\(listing.id)")
                                 }
                                 .buttonStyle(.plain)
                                 
                             }
                         }
                         .padding()
+                        .accessibilityIdentifier("listingList")
                     }
                 }
             }
@@ -97,8 +117,21 @@ private extension ListingsView {
     }
     
     func errorListingView(message: String) -> some View {
-        Text(message)
-            .font(.body)
-            .foregroundStyle(.secondary).multilineTextAlignment(.center) .padding()
+        VStack(spacing: 16) {
+            Image(systemName: "exclamationmark.triangle")
+                    .font(.largeTitle)
+                    .foregroundStyle(.secondary)
+            Text(message)
+                .font(.body)
+                .foregroundStyle(.secondary).multilineTextAlignment(.center) .padding()
+            Button("Retry") {
+                    Task {
+                       await viewModel.loadListings()
+                    }
+                }
+                    .buttonStyle(.borderedProminent)
+            
+        }
+        .padding()
     }
 }
