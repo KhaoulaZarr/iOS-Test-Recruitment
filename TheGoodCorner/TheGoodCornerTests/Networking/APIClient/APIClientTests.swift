@@ -28,6 +28,7 @@ final class APIClientTests: XCTestCase {
     }
     
     // When the server returns HTTP 200 and valid JSON,does APIClient correctly decodes the response?
+    @MainActor
     func test_with_successful_response_response_is_valid() async throws {
         guard let path = Bundle.main.path(forResource: "ListingsStaticData", ofType: "json"),
               let data = FileManager.default.contents(atPath: path) else {
@@ -60,6 +61,7 @@ final class APIClientTests: XCTestCase {
     }
     
     // When the server return an invalid HTTP status code, does API Client throws the expected NetworkingError ?
+    @MainActor
     func test_with_unsuccessful_response_code_in_invalid_range_is_invalid() async {
         let invalidStatusCode = 400
         
@@ -95,6 +97,7 @@ final class APIClientTests: XCTestCase {
     }
     
     // When the server returns an invalid HTTP status code with no data, does API Client throw the expected NetworkingError for an EmptyResponse
+    @MainActor
     func test_with_unsuccessful_response_code_void_in_invalid_range_is_invalid() async {
         let invalidStatusCode = 400
         

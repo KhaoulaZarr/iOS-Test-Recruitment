@@ -10,6 +10,7 @@ import SwiftUI
 struct ListingCardView: View {
     let listing: Listing
     let categoryName: String
+    @Environment(\.locale) private var locale
     
     var body: some View {
         HStack(alignment: .center, spacing: 18) {
@@ -33,7 +34,7 @@ struct ListingCardView: View {
     }
     
     private var accessibilityDescription: String {
-        var description = "\(listing.title), \(listing.price) euros, \(categoryName)"
+        var description = "\(listing.title), \(PriceFormatting.string(for: listing.price, locale: locale)), \(categoryName)"
         if listing.isUrgent {
             description += ", urgent listing"
         }
@@ -75,7 +76,7 @@ private extension ListingCardView {
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
             Spacer()
-            Text("\(listing.price) €")
+            Text(PriceFormatting.string(for: listing.price, locale: locale))
                 .font(.headline.weight(.semibold))
                 .foregroundStyle(Color.appPrimary)
         }

@@ -31,7 +31,7 @@ struct Listing: Codable, Identifiable, Hashable {
     let categoryId: Int
     let title: String
     let imagesURL: ImagesURL?
-    let price: Int
+    let price: Double
     let description: String
     let creationDate: String
 

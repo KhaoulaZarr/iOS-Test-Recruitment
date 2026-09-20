@@ -9,6 +9,7 @@ import SwiftUI
 struct ListingDetailView: View {
     let listing: Listing
     let categoryName: String
+    @Environment(\.locale) private var locale
     
     var body: some View {
         ScrollView {
@@ -44,7 +45,7 @@ private extension ListingDetailView {
     var listingInformation: some View {
         Text(listing.title)
             .font(.title.bold())
-        Text("\(listing.price) €")
+        Text(PriceFormatting.string(for: listing.price, locale: locale))
             .font(.title3.weight(.semibold))
             .foregroundStyle(Color.appPrimary)
         Label(categoryName, systemImage: "tag")

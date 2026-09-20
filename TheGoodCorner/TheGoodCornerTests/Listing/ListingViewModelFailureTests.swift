@@ -8,6 +8,7 @@
 import XCTest
 @testable import TheGoodCorner
 
+@MainActor
 final class ListingViewModelFailureTests: XCTestCase {
     private var listingServiceMock: ListingServiceProtocol!
     private var categoryServiceMock: CategoryServiceProtocol!
@@ -27,7 +28,6 @@ final class ListingViewModelFailureTests: XCTestCase {
     }
     
     // When the server returns an invalid response, do we receive the expected error message?
-    @MainActor
     func test_with_unsuccessfull_response_error_is_handled() async {
         XCTAssertEqual(vm.loadingState , .idle, "The initial state should be idle")
         defer {

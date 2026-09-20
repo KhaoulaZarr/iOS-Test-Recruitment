@@ -31,27 +31,27 @@ final class ListingsScreenUITests: XCTestCase {
         XCTAssertEqual(listItems.count, 5, "There should be 5 items on the screen")
         // First listing
             XCTAssertTrue(listItems.staticTexts["Vinyle Elliott Murphy Just A Story From America"].exists)
-            XCTAssertTrue(listItems.staticTexts["10 €"].exists)
+            XCTAssertTrue(listItems.staticTexts["10,00 €"].exists)
             XCTAssertTrue(listItems.staticTexts["LIVRES/CD/DVD"].exists)
 
             // Second listing
             XCTAssertTrue(listItems.staticTexts["Poussette Bugaboo Bee"].exists)
-            XCTAssertTrue(listItems.staticTexts["250 €"].exists)
+            XCTAssertTrue(listItems.staticTexts["250,00 €"].exists)
             XCTAssertTrue(listItems.staticTexts["ENFANTS"].exists)
 
             // Third listing
             XCTAssertTrue(listItems.staticTexts["Vinyle Lalo Schifrin Mission: Impossible"].exists)
-            XCTAssertTrue(listItems.staticTexts["10 €"].exists)
+            XCTAssertTrue(listItems.staticTexts["10,00 €"].exists)
             XCTAssertTrue(listItems.staticTexts["LIVRES/CD/DVD"].exists)
 
             // Fourth listing
             XCTAssertTrue(listItems.staticTexts["Brosse à dent électrique 2 en 1 NEUVE Hybrid"].exists)
-            XCTAssertTrue(listItems.staticTexts["25 €"].exists)
+            XCTAssertTrue(listItems.staticTexts["25,00 €"].exists)
             XCTAssertTrue(listItems.staticTexts["MAISON"].exists)
 
             // Fifth listing
             XCTAssertTrue(listItems.staticTexts["Les morts du Karst de Veit Heinichen"].exists)
-            XCTAssertTrue(listItems.staticTexts["3 €"].exists)
+            XCTAssertTrue(listItems.staticTexts["3,00 €"].exists)
             XCTAssertTrue(listItems.staticTexts["LIVRES/CD/DVD"].exists)
     }
 }
