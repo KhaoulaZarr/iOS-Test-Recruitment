@@ -45,9 +45,7 @@ final class ListingViewModel: ObservableObject  {
             )
             
             allListings = feed.items
-            loadingState = allListings.isEmpty
-            ? .empty
-            : .loaded(allListings)
+            filterByCategory(selectedCategoryID)
             
         } catch {
             loadingState = .error(error.localizedDescription)

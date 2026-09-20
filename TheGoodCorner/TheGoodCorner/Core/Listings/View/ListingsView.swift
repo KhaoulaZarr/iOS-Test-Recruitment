@@ -85,6 +85,7 @@ struct ListingsView: View {
                         showFilter.toggle()
                     } label: {
                         Image(systemName: "line.3.horizontal.decrease.circle")
+                            .foregroundStyle(Color.appPrimary)
                     }
                     .accessibilityLabel("Filter listings")
                     .accessibilityHint("Opens the filter to select a category")
@@ -94,10 +95,14 @@ struct ListingsView: View {
                 CategoriesFilterView(viewModel: viewModel)
             })
             .refreshable {
-                await viewModel.loadListings()
+                    await viewModel.loadListings()
+                
             }
             .task {
-                await viewModel.loadListings()
+                 if viewModel.loadingState == .idle {
+                    await viewModel.loadListings()
+                }
+                
             }
         }
     }

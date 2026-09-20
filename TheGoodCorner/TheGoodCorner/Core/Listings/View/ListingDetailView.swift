@@ -13,10 +13,7 @@ struct ListingDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                ListingImageView(imageURL: listing.thumbImageURL ?? "")
-                    .frame(height: 240)
-                    .clipShape(RoundedRectangle(cornerRadius: 14))
-                    .accessibilityHidden(true)
+                listingImage
                 
                 VStack(alignment: .leading, spacing: 10) {
                     listingInformation
@@ -35,19 +32,27 @@ struct ListingDetailView: View {
 }
 
 private extension ListingDetailView {
+    
+    var listingImage: some View {
+        ListingImageView(imageURL: listing.thumbImageURL ?? "")
+            .frame(height: 240)
+            .clipShape(RoundedRectangle(cornerRadius: 14))
+            .accessibilityHidden(true)
+    }
+    
     @ViewBuilder
     var listingInformation: some View {
         Text(listing.title)
             .font(.title.bold())
         Text("\(listing.price) €")
             .font(.title3.weight(.semibold))
-            .foregroundStyle(.blue)
+            .foregroundStyle(Color.appPrimary)
         Label(categoryName, systemImage: "tag")
             .font(.subheadline)
             .foregroundStyle(.secondary)
         if listing.isUrgent {
-            Label("Urgent listing", systemImage: "exclamationmark.circle.fill")
-                .foregroundStyle(.red)
+            Label("Urgent listing", systemImage: "exclamationmark.triangle.fill")
+                .foregroundStyle(Color.appPrimary)
         }
         Text(listing.description)
             .font(.body)
