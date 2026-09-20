@@ -17,6 +17,7 @@ final class ListingViewModel: ObservableObject  {
     private let categoryService: CategoryServiceProtocol
     private var categoriesByID: [Int: String] = [:]
     private var allListings: [Listing] = []
+    @Published var selectedCategoryID: Int?
     
     init(listingService: ListingServiceProtocol, categoryService: CategoryServiceProtocol) {
         self.listingService = listingService
@@ -58,6 +59,7 @@ final class ListingViewModel: ObservableObject  {
     }
     
     func filterByCategory(_ categoryID: Int?) {
+        selectedCategoryID = categoryID
         guard let categoryID else {
             loadingState = allListings.isEmpty
             ? .empty

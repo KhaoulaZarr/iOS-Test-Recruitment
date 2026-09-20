@@ -9,8 +9,15 @@ import SwiftUI
 
 struct CategoriesFilterView: View {
     @ObservedObject var viewModel: ListingViewModel
-    @State private var selectedCategoryID: Int?
     @Environment(\.dismiss) var dismiss
+    @State private var temporarySelectedCategoryID: Int?
+    
+    init(viewModel: ListingViewModel) {
+        self.viewModel = viewModel
+            _temporarySelectedCategoryID = State(
+                initialValue: viewModel.selectedCategoryID
+            )
+        }
     
     var body: some View {
         NavigationStack {
@@ -30,6 +37,12 @@ struct CategoriesFilterView: View {
                         dismiss()
                     }
                 }
+                
+                ToolbarItem(placement: .topBarTrailing) {
+                        Button("Reset") {
+                            temporarySelectedCategoryID = nil
+                        }
+                    }
             }
         }
         
@@ -56,7 +69,7 @@ private extension CategoriesFilterView {
             CategoryCardView(
                 title: "All categories",
                 categoryID: nil,
-                selectedCategoryID: $selectedCategoryID
+                selectedCategoryID: $temporarySelectedCategoryID
             )
             ForEach(
                 viewModel.categories
@@ -64,7 +77,7 @@ private extension CategoriesFilterView {
                 CategoryCardView(
                     title: category.name,
                     categoryID: category.id,
-                    selectedCategoryID: $selectedCategoryID
+                    selectedCategoryID: $temporarySelectedCategoryID
                 )
             }
         }
@@ -72,7 +85,7 @@ private extension CategoriesFilterView {
     
     var applyButton: some View {
         Button {
-            viewModel.filterByCategory(selectedCategoryID)
+            viewModel.filterByCategory(temporarySelectedCategoryID)
             dismiss()
         } label: {
             Text("Apply Filter")
