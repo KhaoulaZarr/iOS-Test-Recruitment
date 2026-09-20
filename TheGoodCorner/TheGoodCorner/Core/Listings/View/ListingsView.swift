@@ -86,6 +86,8 @@ struct ListingsView: View {
                     } label: {
                         Image(systemName: "line.3.horizontal.decrease.circle")
                     }
+                    .accessibilityLabel("Filter listings")
+                    .accessibilityHint("Opens the filter to select a category")
                 }
             }
             .sheet(isPresented: $showFilter, content: {
@@ -121,9 +123,12 @@ private extension ListingsView {
             Image(systemName: "exclamationmark.triangle")
                     .font(.largeTitle)
                     .foregroundStyle(.secondary)
+                    .accessibilityHidden(true)
             Text(message)
                 .font(.body)
-                .foregroundStyle(.secondary).multilineTextAlignment(.center) .padding()
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .padding()
             Button("Retry") {
                     Task {
                        await viewModel.loadListings()

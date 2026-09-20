@@ -22,6 +22,7 @@ struct CategoryCardView: View {
                     .frame(width:36, height: 36)
                     .background(.blue.opacity(0.1))
                     .clipShape(Circle())
+                    .accessibilityHidden(true)
                 Text(title)
                     .font(.body.weight(.medium))
                 Spacer()
@@ -32,6 +33,7 @@ struct CategoryCardView: View {
                 .foregroundStyle(selectedCategoryID == categoryID
                                  ? .blue
                                  : .secondary)
+                .accessibilityHidden(true)
             }
         }
         .padding(16)
@@ -53,6 +55,10 @@ struct CategoryCardView: View {
                 )
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(title)
+        .accessibilityValue(
+            selectedCategoryID == categoryID ? "Selected" : "Not selected"
+        )
     }
 }
 

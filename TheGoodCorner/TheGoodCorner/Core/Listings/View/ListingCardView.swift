@@ -17,6 +17,7 @@ struct ListingCardView: View {
                 ListingImageView(imageURL: listing.thumbImageURL ?? "")
                     .frame(width: 92, height: 92)
                     .clipShape(RoundedRectangle(cornerRadius: 14))
+                    .accessibilityHidden(true)
             }
             VStack(alignment: .leading, spacing: 8) {
                 HStack(alignment: .top) {
@@ -62,6 +63,16 @@ struct ListingCardView: View {
             RoundedRectangle(cornerRadius: 18, style: .continuous)
                 .stroke(Color.black.opacity(0.04), lineWidth: 1.0)
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(accessibilityDescription)
+    }
+    
+    private var accessibilityDescription: String {
+        var description = "\(listing.title), \(listing.price) euros, \(categoryName)"
+        if listing.isUrgent {
+            description += ", urgent listing"
+        }
+        return description
     }
 }
 

@@ -16,6 +16,7 @@ struct ListingDetailView: View {
                 ListingImageView(imageURL: listing.thumbImageURL ?? "")
                     .frame(height: 240)
                     .clipShape(RoundedRectangle(cornerRadius: 14))
+                    .accessibilityHidden(true)
                 
                 VStack(alignment: .leading, spacing: 10) {
                     listingInformation
@@ -44,6 +45,10 @@ private extension ListingDetailView {
         Label(categoryName, systemImage: "tag")
             .font(.subheadline)
             .foregroundStyle(.secondary)
+        if listing.isUrgent {
+            Label("Urgent listing", systemImage: "exclamationmark.circle.fill")
+                .foregroundStyle(.red)
+        }
         Text(listing.description)
             .font(.body)
             .foregroundStyle(.primary)

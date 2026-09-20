@@ -92,7 +92,7 @@ private extension CategoriesFilterView {
                 .font(.headline)
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
-                .frame(height: 52)
+                .padding(.vertical, 16)
                 .background(.blue)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
         }
