@@ -116,30 +116,39 @@ struct ListingsView: View {
 private extension ListingsView {
     
     var emptyListingView: some View {
-        Text("No listings to display")
-            .font(.body)
-            .foregroundStyle(.secondary)
-            .multilineTextAlignment(.center)
-            .padding()
+        VStack {
+            Image(systemName: "magnifyingglass")
+                .font(.largeTitle)
+                .foregroundStyle(Color.appPrimary)
+                .accessibilityHidden(true)
+            Text("No listings found")
+                .font(.body)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .padding()
+        }
+        .frame(maxWidth: .infinity)
+        .padding()
     }
     
     func errorListingView(message: String) -> some View {
         VStack(spacing: 16) {
             Image(systemName: "exclamationmark.triangle")
-                    .font(.largeTitle)
-                    .foregroundStyle(.secondary)
-                    .accessibilityHidden(true)
+                .font(.largeTitle)
+                .foregroundStyle(Color.appPrimary)
+                .accessibilityHidden(true)
             Text(message)
                 .font(.body)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .padding()
             Button("Retry") {
-                    Task {
-                       await viewModel.loadListings()
-                    }
+                Task {
+                    await viewModel.loadListings()
                 }
-                    .buttonStyle(.borderedProminent)
+            }
+            .buttonStyle(.bordered)
+            .tint(Color.appPrimary)
             
         }
         .padding()
