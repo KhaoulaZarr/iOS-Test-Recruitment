@@ -3,9 +3,11 @@
 I mainly used AI to:
 * Review implementation approaches and suggest improvements.
 * Help identify and organize expected static values used in UI test assertions, such as listing titles, prices, and category names.
+* Suggest a suitable color palette for the application and help define reusable colors in a Color extension.
+* Review the date and price formatting implementation and suggest improvements for localization.
 * # Concrete AI Suggestion I Corrected
 One concrete example was related to category filtering.
-The application keeps the complete API response in allListings and uses loadingState for the listings currently displayed by the UI.
+The application keeps the complete API response in `allListings` and uses `loadingState` for the listings currently displayed by the UI.
 Initially, after fetching the data, `loadListings()` assigned:
 ```swift
 allListings = feed.items
@@ -34,7 +36,7 @@ Explicit pull-to-refresh remains available through:
     await viewModel.loadListings()
 }
 ```
-This also means that refreshing while a category is selected keeps the current filter because loadListings() reapplies selectedCategoryID.
+This also means that refreshing while a category is selected keeps the current filter because `loadListings()` reapplies `selectedCategoryID`.
 ## Architectural Decisions
 I made the following architectural decisions during the implementation:
 ### ViewModel and State Management
@@ -77,7 +79,6 @@ The filter screen uses a temporary selection so that cancelling the filter does 
 I added accessibility labels and identifiers to important interactive elements.
 For listing cards, the image is treated as decorative and the card exposes a combined accessibility description containing the listing title, price, category, and urgent status.
 ### Testing
-## Testing
 
 I added unit, integration and UI tests covering the main networking, decoding, ViewModel, and UI scenarios.
 
@@ -85,6 +86,9 @@ I added unit, integration and UI tests covering the main networking, decoding, V
 
 - `JsonMapperTests` — verifies JSON decoding for listings and categories.
 - `APIClientTests` — verifies API request behavior, successful responses, and HTTP/networking errors.
+
+### Integration Tests
+
 - `ListingViewModelSuccessTests` — verifies the ViewModel behavior when listings and categories are loaded successfully.
 - `ListingViewModelFailureTests` — verifies the ViewModel behavior when a network request fails.
 
@@ -92,6 +96,7 @@ I added unit, integration and UI tests covering the main networking, decoding, V
 
 - `ListingsScreenUITests` — verifies successful UI states, including the displayed listings, their titles, prices and categories.
 - `ListingsFailureUITests` — verifies the listings screen failure state by simulating a networking failure and checking that the error message and `Retry` button are displayed.
+- `CategoriesFilterUITests` — verifies that the category filter screen is displayed when the filter button is tapped and that selecting a category correctly filters the listings and displays the expected results.
 
 The UI tests use mock networking controlled through launch arguments and environment values. This makes it possible to test success and failure states without depending on the real network.
 ### UI Decisions
@@ -118,7 +123,7 @@ The main ambiguities I identified in the prompt and API were:
 
 - The API provides `category_id` in each listing, while the category name is provided by a separate categories endpoint. I used the category endpoint to map category IDs to the names displayed in the UI.
 - The requirements specify that the API listing order should be preserved. I therefore apply filtering without sorting the original `allListings` array.
-- Listing images may be missing or unavailable. I handled this by displaying a placeholder while keeping the listing visible.
+- Listing images may be missing or unavailable. I handled both cases by displaying an appropriate placeholder: a default placeholder when the image URL is missing or empty, and an error placeholder when the image fails to load, while keeping the listing visible.
 - No separate listing-detail endpoint was provided or required. The selected `Listing` is therefore passed directly to the detail view.
 - The API provides `creation_date`, but no specific display format was required. I kept the value in the model and only transform it if formatting is needed for presentation.
 - The price is represented as a numeric value matching the API response.
