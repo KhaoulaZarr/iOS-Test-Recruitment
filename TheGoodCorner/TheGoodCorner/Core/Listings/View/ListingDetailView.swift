@@ -35,10 +35,13 @@ struct ListingDetailView: View {
 private extension ListingDetailView {
     
     var listingImage: some View {
-        ListingImageView(imageURL: listing.thumbImageURL ?? "")
-            .frame(height: 240)
-            .clipShape(RoundedRectangle(cornerRadius: 14))
-            .accessibilityHidden(true)
+        ListingImageView(
+            imageURL: listing.thumbImageURL,
+            placeholderIconFont: .largeTitle
+        )
+        .frame(height: 240)
+        .clipShape(RoundedRectangle(cornerRadius: 14))
+        .accessibilityHidden(true)
     }
     
     @ViewBuilder
@@ -51,6 +54,14 @@ private extension ListingDetailView {
         Label(categoryName, systemImage: "tag")
             .font(.subheadline)
             .foregroundStyle(.secondary)
+        Text(
+            DateFormatterHelper.format(
+                apiDate: listing.creationDate,
+                locale: locale
+            )
+        )
+        .font(.subheadline)
+        .foregroundStyle(.secondary)
         if listing.isUrgent {
             Label("Urgent listing", systemImage: "exclamationmark.triangle.fill")
                 .foregroundStyle(Color.appPrimary)

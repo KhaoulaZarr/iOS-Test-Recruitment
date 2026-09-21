@@ -14,8 +14,8 @@ struct ListingCardView: View {
     
     var body: some View {
         HStack(alignment: .center, spacing: 18) {
-                listingImage
-        
+            listingImage
+            
             VStack(alignment: .leading, spacing: 8) {
                 listingTitleAndPrice
                 categoryAndUrgentBadge
@@ -63,10 +63,13 @@ extension ListingCardView {
 private extension ListingCardView {
     
     var listingImage: some View {
-        ListingImageView(imageURL: listing.thumbImageURL ?? "")
-            .frame(width: 92, height: 92)
-            .clipShape(RoundedRectangle(cornerRadius: 14))
-            .accessibilityHidden(true)
+        ListingImageView(
+            imageURL: listing.thumbImageURL,
+            placeholderIconFont: .title2
+        )
+        .frame(width: 92, height: 92)
+        .clipShape(RoundedRectangle(cornerRadius: 14))
+        .accessibilityHidden(true)
     }
     
     var listingTitleAndPrice: some View {

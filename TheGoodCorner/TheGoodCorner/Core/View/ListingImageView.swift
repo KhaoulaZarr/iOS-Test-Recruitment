@@ -9,49 +9,71 @@ import SwiftUI
 
 struct ListingImageView: View {
     let imageURL: String?
+    let placeholderIconFont: Font
     
     var body: some View {
-        AsyncImage(
-         url: URL(string: imageURL ?? "")
-        ) { phase in
-            switch phase {
-            case .empty:
+        Group {
+            if let imageURL,
+               let url = URL(string: imageURL) {
+                AsyncImage(
+                    url: url
+                ) { phase in
+                    switch phase {
+                    case .empty:
+                        loadingPlaceholder
+                        
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .scaledToFill()
+                        
+                    case .failure(_):
+                        errorImageLoading()
+                        
+                    @unknown default:
+                        imagePlaceholder
+                    }
+                }
+            }
+            else {
                 imagePlaceholder
-
-            case .success(let image):
-                image
-                    .resizable()
-                    .scaledToFill()
-
-            case .failure(let error):
-                errorImageLoading(
-                    message: error.localizedDescription
-                )
-
-            @unknown default:
-                Text("Unknown")
-                .foregroundColor(.gray)
             }
         }
-    }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }    
 }
 
 private extension ListingImageView {
     var imagePlaceholder: some View {
-       ZStack {
-           RoundedRectangle(cornerRadius: 14)
-               .fill(.gray.opacity(0.12))
-
-           ProgressView()
-       }
-   }
-    
-    func errorImageLoading(message: String) -> some View {
-        VStack(spacing: 16) {
-            Image(systemName: "xmark.octagon.fill")
-            .foregroundColor(.red)
-              Text(message)
-               .multilineTextAlignment(.center)
+        RoundedRectangle(cornerRadius: 14)
+            .fill(.gray.opacity(0.12))
+            .overlay {
+                Image(systemName: "photo")
+                    .foregroundStyle(.secondary)
+                    .font(placeholderIconFont)
+            }
+    }
+    var loadingPlaceholder: some View {
+        ZStack {
+            imagePlaceholder
+            ProgressView()
         }
+    }
+    
+    func errorImageLoading() -> some View {
+        VStack(spacing: 8) {
+            Image(systemName: "photo.badge.exclamationmark")
+                .foregroundStyle(.secondary)
+                .font(placeholderIconFont)
+            
+            Text("Image unavailable")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(.gray.opacity(0.12))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Image unavailable")
     }
 }
