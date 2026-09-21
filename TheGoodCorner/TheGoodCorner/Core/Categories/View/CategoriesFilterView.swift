@@ -138,6 +138,7 @@ private extension CategoriesFilterView {
                     x: 0,
                     y: 3
                 )
+                .accessibilityIdentifier("applyFilterButton")
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 12)

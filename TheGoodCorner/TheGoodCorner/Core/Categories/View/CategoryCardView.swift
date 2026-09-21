@@ -65,6 +65,7 @@ struct CategoryCardView: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .accessibilityIdentifier("category_\(categoryID ?? 0)")
         .accessibilityLabel(title)
         .accessibilityValue(
             selectedCategoryID == categoryID
